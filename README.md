@@ -12,6 +12,7 @@ Please demonstrate the app autoscales and displays some level of autohealing.
 
 Also, the app has tests. We like them to run of course :-)
 
+Check out the back-end README [here](https://github.com/RoyalHaskoningDHV/take-home-assignment-platform-engineer/tree/master/backend)
 
 ## Tech choices
 
