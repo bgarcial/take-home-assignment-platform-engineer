@@ -11,8 +11,8 @@ class DemoController {
     private val clientList = mutableListOf(ClientDto(1, "John"), ClientDto(2, "Mary"))
 
     @GetMapping("/clients")
-    fun getAll(): List<ClientDto> {
-        return clientList
+    fun getAll(): ResponseEntity<List<ClientDto>> {
+        return ResponseEntity.ok(clientList)
     }
 
     @GetMapping("/clients/{id}")
