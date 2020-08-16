@@ -36,10 +36,16 @@ class DemoController {
     @PostMapping("/clients/delete")
     fun deleteClient(@RequestBody client: CreateClientDto?): List<ClientDto> {
         val i = 0;
+        /* Going through index's list */
         for (i in clientList.indices) {
+            /* Making sure I got an index client list */
             if (client != null) {
+                /* If client received as parameter is
+                * equal to client[i] index */
                 if (clientList[i].name == client.name) {
+                    /* Remove that client */
                     clientList.remove(clientList[i]);
+                    /* Involve break to avoid ask for non-existing client at the next iteration */
                     break;
                 }
             }
