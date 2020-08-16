@@ -59,7 +59,7 @@ export TF_VAR_subscription_id="9148bd11-f32b-4b5d-a6c0-5ac5317f29ca"
 export TF_VAR_tenant_id="4e6b0716-50ea-4664-90a8-998f60996c44"
 
 # Create an Azure KeyVault
-KEYVAULT_NAME=$customer_prefix-ops-kv
+KEYVAULT_NAME=$customer_prefix-operations-kv
 echo "Creating $KEYVAULT_NAME key vault..."
 az keyvault create -g $INFRA_RESOURCE_GROUP_NAME -l westeurope -n $KEYVAULT_NAME
 

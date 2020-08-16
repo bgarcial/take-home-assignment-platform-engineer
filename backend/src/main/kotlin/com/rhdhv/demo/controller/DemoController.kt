@@ -33,6 +33,20 @@ class DemoController {
                 .body(newClient);
     }
 
+    @PostMapping("/clients/delete")
+    fun deleteClient(@RequestBody client: CreateClientDto?): List<ClientDto> {
+        val i = 0;
+        for (i in clientList.indices) {
+            if (client != null) {
+                if (clientList[i].name == client.name) {
+                    clientList.remove(clientList[i]);
+                    break;
+                }
+            }
+        }
+        return clientList;
+    }
+
 }
 
 data class ClientDto(
