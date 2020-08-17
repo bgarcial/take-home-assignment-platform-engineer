@@ -28,6 +28,10 @@ jobs:
       # - name: Get the version
         # id: vars
         # run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+      - name:
+        run: cd backend/
+      - name:
+        run: mvn clean install
       - name: Building spring-boot app with maven
         run: mvn clean install
       - name: Build the tagged Docker image
