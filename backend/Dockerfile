@@ -3,7 +3,7 @@ FROM openjdk:14-alpine
 MAINTAINER example.com
 RUN mkdir -p /opt/demo-0.0.1/lib
 # Setting application source code working directory
-WORKDIR /opt/demo-0.0.1/
+WORKDIR /opt/demo-0.0.1/lib
 COPY ./target/demo-0.0.1-SNAPSHOT.jar /opt/demo-0.0.1/lib/demo-0.0.1-SNAPSHOT.jar
 # ADD target/demo-0.0.1-SNAPSHOT.jar /opt/demo-0.0.1/lib/
 
