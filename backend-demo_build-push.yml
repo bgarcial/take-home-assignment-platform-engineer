@@ -1,0 +1,43 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Backend-Demo Docker Image CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ dev ]
+  # pull_request:
+    # branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    # Runs a single command using the runners shell
+    - name: Login to Azure Container Registry
+      # https://docs.docker.com/engine/reference/commandline/login/#provide-a-password-using-stdin
+      run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+    - name: Get the version
+      id: vars
+      run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
+    - name: Build the tagged Docker image
+      run: docker build . --file Dockerfile --tag backend-demo/spring-boot:${{steps.vars.outputs.tag}}
+    - name: Push the tagged Docker image
+      run: docker push backend-demo/spring-boot:${{steps.vars.outputs.tag}}
+    - name: Build the latest Docker image
+      run: docker build . --file Dockerfile --tag backend-demo/spring-boot:latest
+    - name: Push the latest Docker image
+      run: docker push backend-demo/spring-boot:latest
+    # Runs a set of commands using the runners shell
+    - name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
