@@ -20,13 +20,13 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       # Runs a single command using the runners shell
       - name: Login to Azure Container Registry
         # https://docs.docker.com/engine/reference/commandline/login/#provide-a-password-using-stdin
         run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.LOGIN_SERVER_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
-      - name: Entering to backend spring-boot app and building spring-boot app with maven
-        run: cd backend/ && mvn package
+      #- name: Entering to backend spring-boot app and building spring-boot app with maven
+        #run: cd backend/ && mvn package
       - name: Build the tagged Docker image
         # run: docker build --file backend/Dockerfile . --tag backend-demo/spring-boot:v1.0
         run: docker build . --file backend/Dockerfile --tag backend-demo/spring-boot:v1.0
