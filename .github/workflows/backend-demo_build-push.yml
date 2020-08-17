@@ -24,7 +24,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Login to Azure Container Registry
         # https://docs.docker.com/engine/reference/commandline/login/#provide-a-password-using-stdin
-        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.LOGIN_SERVER_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
       - name: Get the version
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
