@@ -2,7 +2,7 @@ package com.rhdhv.frontend.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rhdhv.demo.entity.Client;
+import com.rhdhv.frontend.entity.Client;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,6 +48,16 @@ public class WelcomeController {
         List<Client> userList = getClients();
         model.addAttribute("userList", userList);
         return "welcome"; //view
+    }
+
+    /* Retrieving clients */
+    private static List<Client>  getClients()
+    {
+        final String uri = "http://localhost:8080/clients";
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(uri, String.class);
+        System.out.println(result);
+        return new ArrayList<Client>();
     }
 
 
