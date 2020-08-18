@@ -27,7 +27,7 @@ jobs:
       - name: Build the tagged Docker image
         run: docker build . --file backend/Dockerfile --tag backend-demo/spring-boot:v1.0
       - name: Push the tagged Docker image
-        run: docker push backend-demo/spring-boot:${{steps.vars.outputs.tag}}
+        run: docker push backend-demo/spring-boot:v1.0
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --tag backend-demo/spring-boot:latest
       - name: Push the latest Docker image
