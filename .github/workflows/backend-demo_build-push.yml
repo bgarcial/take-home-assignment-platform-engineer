@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Backend-Demo Docker Image CI
+name: Backend-Demo CI workflow Building and Pushin Docker Image to ACR
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -35,7 +35,9 @@ jobs:
       - name: Push the tagged Docker image
         run: docker push ${{ secrets.LOGIN_SERVER_URL }}/backend-demo:1.0
       - name: Build the latest Docker image
-        run: docker build . --file Dockerfile --tag backend-demo/spring-boot:latest
+        run: docker build . --file backend/Dockerfile --tag backend-demo/spring-boot:latest
+      - name: Create an alias of the latest image
+        run: docker tag backend-demo/spring-boot:latest ${{ secrets.LOGIN_SERVER_URL }}/backend-demo:latest
       - name: Push the latest Docker image
-        run: docker push backend-demo/spring-boot:latest
+        run: docker push ${{ secrets.LOGIN_SERVER_URL }}/backend-demo:latest
 
