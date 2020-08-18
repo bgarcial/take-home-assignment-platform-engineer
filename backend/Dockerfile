@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+# FROM ubuntu:latest
 #FROM maven:3.6.3-openjdk-14
 FROM openjdk:11
 LABEL Bernardo Garcia <botibagl@gmail.com>
