@@ -34,3 +34,21 @@
             </select></p>
         <p><input type="Submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
+    <h1>Employee List</h1>
+    <br />
+    <table border="1">
+        <tr>
+            <td>Client Id</td>
+            <td>Client Name</td>
+        </tr>
+        <tr th:each="emp : ${userList}">
+            <td th:text="${emp.id}">User Id</td>
+            <td th:text="${emp.name}">User Name</td>
+        </tr>
+    </table>
+</main>
+<!-- /.container -->
+
+<script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</body>
+</html>

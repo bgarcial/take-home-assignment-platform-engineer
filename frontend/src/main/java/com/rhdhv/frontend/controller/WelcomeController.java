@@ -50,6 +50,19 @@ public class WelcomeController {
         return "welcome"; //view
     }
 
+    @PostMapping("/backend")
+    public String submitForm(@ModelAttribute("client") Client client,Model model) {
+        System.out.println("user.getName():"+client.getName());
+        System.out.println("user.getAction:"+client.getAction());
+        model.addAttribute("message", "Calling the Backend");
+        model.addAttribute("client", client);
+        model.addAttribute("listAction", listAction);
+        List<Client> userList = getClients();
+        model.addAttribute("userList", userList);
+
+        return "welcome";
+    }
+
     /* Retrieving clients */
     private static List<Client>  getClients()
     {
@@ -57,6 +70,15 @@ public class WelcomeController {
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(uri, String.class);
         System.out.println(result);
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<Client> participantJsonList = mapper.readValue(result, new TypeReference<List<Client>>() {
+            });
+            System.out.println(participantJsonList.size());
+            return participantJsonList;
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         return new ArrayList<Client>();
     }
 
