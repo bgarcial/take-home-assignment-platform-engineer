@@ -10,4 +10,4 @@ COPY backend/target/demo-0.0.1-SNAPSHOT.jar /usr/app/
 WORKDIR /usr/app
 RUN sh -c 'touch demo-0.0.1-SNAPSHOT.jar'
 ENTRYPOINT ["java"]
-CMD ["-jar", "/demo-0.0.1-SNAPSHOT.jar"]
+CMD ["-jar", "/usr/app/demo-0.0.1-SNAPSHOT.jar"]

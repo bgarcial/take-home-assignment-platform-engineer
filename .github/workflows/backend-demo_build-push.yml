@@ -8,16 +8,13 @@ on:
   push:
     branches: [ master ]
     # pull_request:
-    # branches: [ master ]
+    # branches: [ dev ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -28,10 +25,7 @@ jobs:
       #- name: Entering to backend spring-boot app and building spring-boot app with maven
         #run: cd backend/ && mvn package
       - name: Build the tagged Docker image
-        # run: docker build --file backend/Dockerfile . --tag backend-demo/spring-boot:v1.0
         run: docker build . --file backend/Dockerfile --tag backend-demo/spring-boot:v1.0
-        # run: docker image build --file ../../backend/Dockerfile -t backend-demo/spring-boot:v1.0
-        # run: docker build -f Dockerfile -t backend-demo/spring-boot:v1.0 ../../backend/Dockerfile .
       - name: Push the tagged Docker image
         run: docker push backend-demo/spring-boot:${{steps.vars.outputs.tag}}
       - name: Build the latest Docker image
