@@ -25,11 +25,8 @@ jobs:
         run: az login --service-principal --username ${{ secrets.SERVICE_PRINCIPAL_CLIENT_ID }} --password ${{ secrets.SERVICE_PRINCIPAL_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
       - name: Authenticating to Azure ACR
         run: az acr login -n ${{ secrets.LOGIN_SERVER_URL }}
-      - name: Get the version
-        id: vars
-        run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
       - name: Build the tagged Docker image
-        run: docker build . --file backend/Dockerfile --tag backend-demo/spring-boot:${{steps.vars.outputs.tag}}
+        run: docker build . --file backend/Dockerfile --tag backend-demo/spring-boot:v1.0
       - name: Docker Login to Azure Container Registry
         # https://docs.docker.com/engine/reference/commandline/login/#provide-a-password-using-stdin
         run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.LOGIN_SERVER_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
