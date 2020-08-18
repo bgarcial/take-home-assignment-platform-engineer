@@ -22,18 +22,8 @@ jobs:
       - name: Login to Azure Container Registry
         # https://docs.docker.com/engine/reference/commandline/login/#provide-a-password-using-stdin
         run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.LOGIN_SERVER_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
-      - name: Installing az-cli getting packages requirements
-        run: sudo apt-get update && sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
-      - name: Download and install the Microsoft signing key
-        run: curl -sL https://packages.microsoft.com/keys/microsoft.asc |
-          gpg --dearmor |
-          sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
-      - name: Adding Azure CLI software repository
-        run: AZ_REPO=$(lsb_release -cs)
-          echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" |
-          sudo tee /etc/apt/sources.list.d/azure-cli.list
-      - name: Updating repo and installing az-cli
-        run: sudo apt-get update && sudo apt-get install azure-cli
+      - name: Executing Azure cli installation script
+        run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
       - name: Authenticating to Azure ACR
         run: az acr login -n ${{ secrets.LOGIN_SERVER_URL }}
       - name: Build the tagged Docker image
