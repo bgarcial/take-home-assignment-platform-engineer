@@ -30,15 +30,12 @@ jobs:
       - name: Docker Login to Azure Container Registry
         # https://docs.docker.com/engine/reference/commandline/login/#provide-a-password-using-stdin
         run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.LOGIN_SERVER_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+      - name: Create an alias of the image
+        run: docker tag backend-demo/spring-boot:v1.0 ${{ secrets.LOGIN_SERVER_URL }}/backend-demo:1.0
       - name: Push the tagged Docker image
-        run: docker push backend-demo/spring-boot:v1.0
-        # run: docker push backend-demo/spring-boot:v1.0
+        run: docker push ${{ secrets.LOGIN_SERVER_URL }}/backend-demo:1.0
       - name: Build the latest Docker image
         run: docker build . --file Dockerfile --tag backend-demo/spring-boot:latest
       - name: Push the latest Docker image
         run: docker push backend-demo/spring-boot:latest
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+
