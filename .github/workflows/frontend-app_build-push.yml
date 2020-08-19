@@ -1,0 +1,49 @@
+name: Frontend application CI workflow Building and Pushin Docker Image to ACR
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  #pull_request:
+  #  branches:
+  #    - master
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      # Runs a single command using the runners shell
+      - name: Executing Azure cli installation script
+        run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      - name: Authenticating to Azure Platform | az login
+        run: az login --service-principal --username ${{ secrets.SERVICE_PRINCIPAL_CLIENT_ID }} --password ${{ secrets.SERVICE_PRINCIPAL_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+      - name: Authenticating to Azure ACR
+        run: az acr login -n ${{ secrets.LOGIN_SERVER_URL }}
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - name: Getting to frontend directory and Build with mvn
+        run: cd frontend && mvn -B package --file pom.xml
+      # https://spring.io/blog/2020/01/27/creating-docker-images-with-spring-boot-2-3-0-m1
+      - name: Getting to frontend directory Building Docker image with Spring Boot
+        run: cd frontend && ./mvnw spring-boot:build-image
+      - name: Docker Login to Azure Container Registry
+        # https://docs.docker.com/engine/reference/commandline/login/#provide-a-password-using-stdin
+        run: echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.LOGIN_SERVER_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+      - name: Create an alias of the image
+        run: docker tag frontend:0.0.1-SNAPSHOT ${{ secrets.LOGIN_SERVER_URL }}/frontend-app-spring-boot-build-image:0.0.1
+      - name: Push the tagged Docker image
+        run: docker push ${{ secrets.LOGIN_SERVER_URL }}/frontend-app-spring-boot-build-image:0.0.1
+      - name: Getting to frontend directory Building latest tag Docker image with Spring Boot
+        run: cd frontend && ./mvnw spring-boot:build-image
+      - name: Create an alias of the latest image
+        run: docker tag frontend:0.0.1-SNAPSHOT ${{ secrets.LOGIN_SERVER_URL }}/frontend-app-spring-boot-build-image:latest
+      - name: Push the latest Docker image
+        run: docker push ${{ secrets.LOGIN_SERVER_URL }}/frontend-app-spring-boot-build-image:latest
+
