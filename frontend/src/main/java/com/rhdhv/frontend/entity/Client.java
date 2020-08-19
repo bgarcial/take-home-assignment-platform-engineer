@@ -1,7 +1,7 @@
 package com.rhdhv.frontend.entity;
 public class Client {
     /*Class used to mapping data clients (name and ID)
-    * To the WelcomeController.java and welcome.html in  */
+    * To the WelcomeController.java and welcome.html */
 
     private long id;
     private String name;
