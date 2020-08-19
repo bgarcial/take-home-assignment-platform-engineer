@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-demo
+  namespace: backend
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: backend-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-demo
+  namespace: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend-app
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: backend-app
+    spec:
+      containers:
+        - name: backend-demo
+          image: rhkcontainerregistry.azurecr.io/backend-demo-spring-boot-build-image:0.0.1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: actuator/health
+              port: 8080
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 3
+            failureThreshold: 1
+            # successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 8
+            timeoutSeconds: 2
+            failureThreshold: 1
+            # successThreshold: 1
+            #httpGet:
+            #  path: /actuator/health
+            #  port: 8080
+            #initialDelaySeconds: 5
+            #periodSeconds: 5
