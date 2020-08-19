@@ -26,8 +26,12 @@ jobs:
         run: az login --service-principal --username ${{ secrets.SERVICE_PRINCIPAL_CLIENT_ID }} --password ${{ secrets.SERVICE_PRINCIPAL_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
       - name: Authenticating to Azure ACR
         run: az acr login -n ${{ secrets.LOGIN_SERVER_URL }}
-      - name: Building backend demo with mvn
-        run: cd backend && mvn clean install -U
+      - name: Set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - name: Getting to backend directory and Build with mvn
+        run: cd backend && mvn -B package --file pom.xml
       #- name: Build the tagged Docker image
       #  run: docker build . --file backend/Dockerfile --tag backend-demo/spring-boot:v1.0
 
