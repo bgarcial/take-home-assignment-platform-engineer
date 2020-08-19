@@ -101,7 +101,7 @@ public class WelcomeController {
             final String uri = "https://backend.bgarcial.me/clients/delete";
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.postForObject(uri, client, ArrayList.class);
-            model.addAttribute("message", "Calling the Backend - User was Removed");
+            model.addAttribute("message", "Calling the Backend - User was Removed!");
         }
     }
 }
