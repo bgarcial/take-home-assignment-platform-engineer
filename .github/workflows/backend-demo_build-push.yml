@@ -45,10 +45,10 @@ jobs:
         run: docker tag demo:0.0.1-SNAPSHOT ${{ secrets.LOGIN_SERVER_URL }}/backend-demo-spring-boot-build-image:0.0.1
       - name: Push the tagged Docker image
         run: docker push ${{ secrets.LOGIN_SERVER_URL }}/backend-demo-spring-boot-build-image:0.0.1
-      #- name: Build the latest Docker image
-      #  run: docker build . --file backend/Dockerfile --tag backend-demo/spring-boot:latest
-      #- name: Create an alias of the latest image
-      #  run: docker tag backend-demo/spring-boot:latest ${{ secrets.LOGIN_SERVER_URL }}/backend-demo:latest
-      #- name: Push the latest Docker image
-      #  run: docker push ${{ secrets.LOGIN_SERVER_URL }}/backend-demo:latest
+      - name: Getting to backend directory Building latest tag Docker image with Spring Boot
+        run: cd backend && ./mvnw spring-boot:build-image
+      - name: Create an alias of the latest image
+        run: docker tag demo:0.0.1-SNAPSHOT ${{ secrets.LOGIN_SERVER_URL }}/backend-demo-spring-boot-build-image:latest
+      - name: Push the latest Docker image
+        run: docker push ${{ secrets.LOGIN_SERVER_URL }}/backend-demo-spring-boot-build-image:latest
 
